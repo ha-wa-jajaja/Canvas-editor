@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canvas Editor Test Harness</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f0f0f0; min-height: 100vh; display: flex; flex-direction: column; }
+
+    .te-demo { display: flex; flex-direction: column; flex: 1; min-height: 100vh; }
+
+    .te-demo__header {
+      display: flex; align-items: center; gap: 24px; padding: 16px 24px;
+      background: white; box-shadow: 0 2px 8px rgba(0,0,0,.1); flex-wrap: wrap;
+    }
+    .te-demo__title { font-size: 20px; font-weight: 700; }
+    .te-demo__controls { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .te-demo__control-group { display: flex; align-items: center; gap: 8px; }
+    .te-demo__control-group label { font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .te-demo__select {
+      border: 1px solid #ccc; border-radius: 6px; padding: 6px 10px;
+      font-size: 13px; background: white; cursor: pointer;
+    }
+    .te-demo__btn {
+      padding: 7px 20px; background: #1a1a1a; color: white; border: none;
+      border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .te-demo__btn:hover { background: #333; }
+
+    .te-demo__body { display: flex; flex: 1; overflow: hidden; }
+    .te-demo__editor { flex: 1; padding: 24px; min-width: 0; }
+
+    .canvas-wrapper {
+      width: 100%; max-width: 85vh; min-width: 400px;
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 1;
+    }
+    .canvas-wrapper canvas { width: 100%; height: 100%; display: block; }
+
+    .te-demo__sidebar {
+      width: 240px; flex-shrink: 0; background: white;
+      display: flex; flex-direction: column; border-left: 1px solid #e0e0e0;
+    }
+    .te-demo__tabs { display: flex; border-bottom: 1px solid #e0e0e0; }
+    .te-demo__tab {
+      flex: 1; padding: 12px 8px; border: none; background: none;
+      font-size: 13px; font-weight: 600; cursor: pointer; color: #999;
+    }
+    .te-demo__tab--active { color: #1a1a1a; border-bottom: 2px solid #1a1a1a; margin-bottom: -1px; }
+
+    .te-demo__components { padding: 12px; overflow-y: auto; }
+    .te-demo__hint { font-size: 11px; color: #999; margin-bottom: 12px; }
+    .te-demo__comp-item {
+      display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+      background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px;
+      margin-bottom: 8px; cursor: grab; font-size: 13px; user-select: none;
+    }
+    .te-demo__comp-item:hover { background: #ebebeb; }
+
+    .te-demo__layers { flex: 1; overflow-y: auto; padding: 12px; }
+    .layer-items { display: grid; gap: 10px; }
+    .layer-item {
+      background: #f5f5f5; padding: 10px; border: 1px solid #b5b5b5;
+      cursor: pointer; user-select: none;
+    }
+    .layer-item:hover { background: #e5e5e5; }
+    .layer-item.dragging { opacity: 0.4; }
+
+    .te-demo__output {
+      padding: 16px 24px; background: white; border-top: 1px solid #e0e0e0;
+    }
+    .te-demo__output summary {
+      cursor: pointer; font-size: 13px; font-weight: 600; color: #555;
+    }
+    .te-demo__output pre {
+      margin-top: 12px; font-size: 11px; background: #f5f5f5; padding: 12px;
+      border-radius: 6px; overflow-x: auto; max-height: 200px; overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="te-demo">
+    <header class="te-demo__header">
+      <h1 class="te-demo__title">Canvas Editor Test Harness</h1>
+      <div class="te-demo__controls">
+        <div class="te-demo__control-group">
+          <label>Format</label>
+          <select id="format-select" class="te-demo__select">
+            <option value="1:1">1:1 Square (1000×1000)</option>
+            <option value="4:5">4:5 Portrait (800×1000)</option>
+            <option value="16:9">16:9 Landscape (1600×900)</option>
+          </select>
+        </div>
+        <div class="te-demo__control-group">
+          <label>Load template</label>
+          <select id="template-select" class="te-demo__select">
+            <option value="null">— blank canvas —</option>
+            <option value="1">Two Column</option>
+            <option value="2">Top Product</option>
+            <option value="3">Full Screen + Title</option>
+          </select>
+        </div>
+        <button class="te-demo__btn">Load</button>
+      </div>
+    </header>
+
+    <div class="te-demo__body">
+      <div class="te-demo__editor">
+        <div class="canvas-wrapper">
+          <canvas width="500" height="500"></canvas>
+        </div>
+      </div>
+      <aside class="te-demo__sidebar">
+        <div class="te-demo__tabs">
+          <button class="te-demo__tab te-demo__tab--active">Components</button>
+          <button class="te-demo__tab">Layers</button>
+        </div>
+        <div class="te-demo__components">
+          <p class="te-demo__hint">Drag a component onto the canvas</p>
+          <div class="te-demo__comp-item" draggable="true" data-id="101" data-name="product">
+            <span>⠿</span><span>product</span>
+          </div>
+          <div class="te-demo__comp-item" draggable="true" data-id="102" data-name="endorser">
+            <span>⠿</span><span>endorser</span>
+          </div>
+          <div class="te-demo__comp-item" draggable="true" data-id="103" data-name="logo">
+            <span>⠿</span><span>logo</span>
+          </div>
+          <div class="te-demo__comp-item" draggable="true" data-id="104" data-name="button">
+            <span>⠿</span><span>button</span>
+          </div>
+          <div class="te-demo__comp-item" draggable="true" data-id="105" data-name="tt1">
+            <span>⠿</span><span>tt1</span>
+          </div>
+          <div class="te-demo__comp-item" draggable="true" data-id="106" data-name="tt2">
+            <span>⠿</span><span>tt2</span>
+          </div>
+          <div class="te-demo__comp-item" draggable="true" data-id="107" data-name="form">
+            <span>⠿</span><span>form</span>
+          </div>
+        </div>
+        <div id="templateLayers" class="te-demo__layers"></div>
+      </aside>
+    </div>
+
+    <div class="te-demo__output">
+      <details open>
+        <summary>Current template structure (JSON)</summary>
+        <pre>[]</pre>
+      </details>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
