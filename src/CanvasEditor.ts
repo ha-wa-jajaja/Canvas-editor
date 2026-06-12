@@ -12,7 +12,6 @@ import { drawShape } from './drawing/drawShape'
 import { drawAnchors } from './drawing/drawAnchors'
 import { drawBorders } from './drawing/drawBorders'
 import { drawDeleteBtn } from './drawing/drawDeleteBtn'
-import { getDeleteBtnCenter } from './drawing/drawDeleteBtn'
 import {
   findTopNode,
   findHitAnchor,
@@ -109,9 +108,13 @@ export class CanvasEditor<T = CanvasNode> {
     this.sourceDimensions = { ...dimensions }
 
     if (this.canvasDimensions.width > 0) {
-      const newHeight = this.canvasDimensions.width * (dimensions.height / dimensions.width)
+      const newHeight =
+        this.canvasDimensions.width * (dimensions.height / dimensions.width)
       this.canvas.height = Math.round(newHeight)
-      this.canvasDimensions = { width: this.canvasDimensions.width, height: Math.round(newHeight) }
+      this.canvasDimensions = {
+        width: this.canvasDimensions.width,
+        height: Math.round(newHeight),
+      }
     }
 
     this.nodes = sourceNodes.map((n) => this._toCanvasSpace(n))
@@ -122,7 +125,9 @@ export class CanvasEditor<T = CanvasNode> {
     if (width <= 0) return
     const sourceNodes = this.nodes.map((n) => this._fromCanvasSpace(n))
 
-    const newHeight = Math.round(width * (this.sourceDimensions.height / this.sourceDimensions.width))
+    const newHeight = Math.round(
+      width * (this.sourceDimensions.height / this.sourceDimensions.width)
+    )
     this.canvas.width = width
     this.canvas.height = newHeight
     this.canvasDimensions = { width, height: newHeight }
@@ -183,14 +188,16 @@ export class CanvasEditor<T = CanvasNode> {
   // ─── Drawing ─────────────────────────────────────────────────────────────────
 
   private _draw(): void {
-    if (this.canvasDimensions.width <= 0 || this.canvasDimensions.height <= 0) return
+    if (this.canvasDimensions.width <= 0 || this.canvasDimensions.height <= 0)
+      return
 
     const { width, height } = this.canvasDimensions
     this.ctx.clearRect(0, 0, width, height)
     this.ctx.fillStyle = '#D9D9D9'
     this.ctx.fillRect(0, 0, width, height)
 
-    const focusedUnique = this.activeItem?.unique ?? this.hoverItem?.unique ?? null
+    const focusedUnique =
+      this.activeItem?.unique ?? this.hoverItem?.unique ?? null
 
     // draw back to front
     for (let i = this.nodes.length - 1; i >= 0; i--) {

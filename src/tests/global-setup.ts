@@ -4,7 +4,10 @@ import { join, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { build } from 'esbuild'
 
-const HARNESS_ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '../../')
+const HARNESS_ROOT = join(
+  fileURLToPath(new URL('.', import.meta.url)),
+  '../../'
+)
 const APP_ENTRY = join(HARNESS_ROOT, 'test-harness/app.js')
 const APP_ROUTE = '/test-harness/app.js'
 const PORT = 4321
@@ -85,7 +88,9 @@ export async function setup() {
 
     server.on('error', reject)
     server.listen(PORT, () => {
-      console.log(`[global-setup] Test harness running at http://localhost:${PORT}`)
+      console.log(
+        `[global-setup] Test harness running at http://localhost:${PORT}`
+      )
       resolve()
     })
   })

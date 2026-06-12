@@ -70,9 +70,18 @@ describe('convertNodeToCanvasSpace', () => {
 
   it('round-trips multiple dimension pairs', () => {
     const pairs: Array<[CanvasDimensions, CanvasDimensions]> = [
-      [{ width: 800, height: 600 }, { width: 320, height: 240 }],
-      [{ width: 1600, height: 900 }, { width: 480, height: 270 }],
-      [{ width: 500, height: 500 }, { width: 250, height: 250 }],
+      [
+        { width: 800, height: 600 },
+        { width: 320, height: 240 },
+      ],
+      [
+        { width: 1600, height: 900 },
+        { width: 480, height: 270 },
+      ],
+      [
+        { width: 500, height: 500 },
+        { width: 250, height: 250 },
+      ],
     ]
     const node = makeNode({ x: 100, y: 80, width: 200, height: 150 })
     for (const [s, c] of pairs) {

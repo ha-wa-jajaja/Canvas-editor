@@ -9,7 +9,10 @@ export function getDeleteBtnCenter(node: CanvasNode): { x: number; y: number } {
   }
 }
 
-export function drawDeleteBtn(ctx: CanvasRenderingContext2D, node: CanvasNode): void {
+export function drawDeleteBtn(
+  ctx: CanvasRenderingContext2D,
+  node: CanvasNode
+): void {
   const { x: cx, y: cy } = getDeleteBtnCenter(node)
 
   ctx.fillStyle = '#D20000'

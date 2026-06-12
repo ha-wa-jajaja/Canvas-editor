@@ -4,7 +4,10 @@ import { getConstrainedWidth, getConstrainedHeight } from '../utils/constraints'
 const BORDER_COLOR = '#ffffff'
 const BORDER_WIDTH = 6
 
-export function drawBorders(ctx: CanvasRenderingContext2D, node: CanvasNode): void {
+export function drawBorders(
+  ctx: CanvasRenderingContext2D,
+  node: CanvasNode
+): void {
   const w = getConstrainedWidth(node)
   const h = getConstrainedHeight(node)
 

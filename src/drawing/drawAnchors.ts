@@ -4,7 +4,10 @@ import { getScaledAnchorMetrics } from '../utils/helpers'
 
 const ANCHOR_COLOR = '#ffffff'
 
-export function drawAnchors(ctx: CanvasRenderingContext2D, node: CanvasNode): void {
+export function drawAnchors(
+  ctx: CanvasRenderingContext2D,
+  node: CanvasNode
+): void {
   const { width: aw, height: ah } = getScaledAnchorMetrics(node)
   const w = getConstrainedWidth(node)
   const h = getConstrainedHeight(node)
@@ -56,5 +59,4 @@ export function drawAnchors(ctx: CanvasRenderingContext2D, node: CanvasNode): vo
   ctx.lineTo(node.x, node.y + h)
   ctx.lineTo(node.x + armLength, node.y + h)
   drawCornerL()
-
 }
