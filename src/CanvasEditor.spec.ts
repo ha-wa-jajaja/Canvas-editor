@@ -320,15 +320,36 @@ describe('CanvasEditor', () => {
   // ── setLayerOrder ────────────────────────────────────────────────────────────
 
   describe('setLayerOrder', () => {
-    it('reorders nodes and emits onUpdate', () => {
+    it('emits items in the requested order with priorities reassigned top-down', () => {
       const a = makeSourceNode({ unique: 'a', priority: 0 })
       const b = makeSourceNode({ unique: 'b', priority: 1 })
       editor.loadItems([a, b])
       onUpdate.mockClear()
 
+      // Put 'a' on top, 'b' beneath it
       editor.setLayerOrder(['a', 'b'])
 
-      expect(onUpdate).toHaveBeenCalled()
+      expect(onUpdate).toHaveBeenCalledTimes(1)
+      const emitted: CanvasNode[] = onUpdate.mock.calls.at(-1)![0]
+      // Output reflects the requested order...
+      expect(emitted.map((n) => n.unique)).toEqual(['a', 'b'])
+      // ...and priority is reassigned top-down (index 0 = topmost = highest)
+      expect(emitted.find((n) => n.unique === 'a')!.priority).toBe(1)
+      expect(emitted.find((n) => n.unique === 'b')!.priority).toBe(0)
+    })
+
+    it('produces the opposite order and priorities when reversed', () => {
+      const a = makeSourceNode({ unique: 'a', priority: 0 })
+      const b = makeSourceNode({ unique: 'b', priority: 1 })
+      editor.loadItems([a, b])
+      onUpdate.mockClear()
+
+      editor.setLayerOrder(['b', 'a'])
+
+      const emitted: CanvasNode[] = onUpdate.mock.calls.at(-1)![0]
+      expect(emitted.map((n) => n.unique)).toEqual(['b', 'a'])
+      expect(emitted.find((n) => n.unique === 'b')!.priority).toBe(1)
+      expect(emitted.find((n) => n.unique === 'a')!.priority).toBe(0)
     })
   })
 

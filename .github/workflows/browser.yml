@@ -1,11 +1,11 @@
-name: E2E
+name: Browser Tests
 
 on:
   pull_request:
     branches: [master]
 
 jobs:
-  e2e:
+  browser:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,5 +23,7 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
-      - name: Run e2e tests
-        run: npm run test:e2e
+      # Vitest Browser Mode mounts CanvasEditor directly and runs the source
+      # through Vite in a headless Chromium — no build step or dev server needed.
+      - name: Run browser interaction tests
+        run: npm run test:browser

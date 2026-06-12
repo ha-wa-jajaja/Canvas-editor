@@ -1,15 +1,16 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 
-// Dev server for manual iteration on the canvas editor.
+// Dev server for manual iteration on the canvas editor (see MANUAL-VERIFICATION.md).
 //
-// The e2e harness (test-harness/app.js) imports the *built* package via
-// `../dist/index.js`, which requires `npm run build` after every change. For
-// dev we don't want that round-trip, so we alias that import to the live
-// TypeScript source. Vite serves test-harness/index.html with on-the-fly TS
+// The harness (test-harness/app.js) is a manual playground only — the automated
+// tests no longer use it (they mount CanvasEditor directly via Vitest Browser
+// Mode; see vitest.browser.config.ts).
+//
+// app.js imports the *built* package via `../dist/index.js`, which would require
+// `npm run build` after every change. For dev we alias that import to the live
+// TypeScript source, so Vite serves test-harness/index.html with on-the-fly TS
 // transforms and hot module reloading — edit src/*.ts and the browser updates.
-//
-// e2e is unaffected: it never loads this config (see vitest.e2e.config.ts).
 export default defineConfig({
   root: fileURLToPath(new URL('./test-harness', import.meta.url)),
   resolve: {
