@@ -16,7 +16,9 @@ describe('getConstrainedWidth', () => {
   })
 
   it('clamps to EL_MIN_SIZE when width is below minimum', () => {
-    expect(getConstrainedWidth({ width: 10, minWidth: undefined })).toBe(EL_MIN_SIZE)
+    expect(getConstrainedWidth({ width: 10, minWidth: undefined })).toBe(
+      EL_MIN_SIZE
+    )
   })
 
   it('uses minWidth when it exceeds both width and EL_MIN_SIZE', () => {
@@ -28,39 +30,75 @@ describe('getConstrainedWidth', () => {
   })
 
   it('returns width when it is exactly EL_MIN_SIZE', () => {
-    expect(getConstrainedWidth({ width: EL_MIN_SIZE, minWidth: undefined })).toBe(EL_MIN_SIZE)
+    expect(
+      getConstrainedWidth({ width: EL_MIN_SIZE, minWidth: undefined })
+    ).toBe(EL_MIN_SIZE)
   })
 })
 
 describe('getConstrainedHeight', () => {
   it('returns height when it exceeds EL_MIN_SIZE and has no maxHeight', () => {
-    expect(getConstrainedHeight({ height: 200, minHeight: undefined, maxHeight: undefined })).toBe(200)
+    expect(
+      getConstrainedHeight({
+        height: 200,
+        minHeight: undefined,
+        maxHeight: undefined,
+      })
+    ).toBe(200)
   })
 
   it('clamps to EL_MIN_SIZE when height is below minimum', () => {
-    expect(getConstrainedHeight({ height: 10, minHeight: undefined, maxHeight: undefined })).toBe(EL_MIN_SIZE)
+    expect(
+      getConstrainedHeight({
+        height: 10,
+        minHeight: undefined,
+        maxHeight: undefined,
+      })
+    ).toBe(EL_MIN_SIZE)
   })
 
   it('clamps to maxHeight when height exceeds it', () => {
-    expect(getConstrainedHeight({ height: 300, minHeight: undefined, maxHeight: 200 })).toBe(200)
+    expect(
+      getConstrainedHeight({
+        height: 300,
+        minHeight: undefined,
+        maxHeight: 200,
+      })
+    ).toBe(200)
   })
 
   it('returns EL_MIN_SIZE when height is below min and maxHeight is large', () => {
-    expect(getConstrainedHeight({ height: 10, minHeight: undefined, maxHeight: 500 })).toBe(EL_MIN_SIZE)
+    expect(
+      getConstrainedHeight({ height: 10, minHeight: undefined, maxHeight: 500 })
+    ).toBe(EL_MIN_SIZE)
   })
 
   it('minHeight overrides EL_MIN_SIZE when larger', () => {
-    expect(getConstrainedHeight({ height: 10, minHeight: 80, maxHeight: undefined })).toBe(80)
+    expect(
+      getConstrainedHeight({ height: 10, minHeight: 80, maxHeight: undefined })
+    ).toBe(80)
   })
 
   it('clamps result between minHeight and maxHeight', () => {
-    expect(getConstrainedHeight({ height: 10, minHeight: 60, maxHeight: 90 })).toBe(60)
-    expect(getConstrainedHeight({ height: 200, minHeight: 60, maxHeight: 90 })).toBe(90)
+    expect(
+      getConstrainedHeight({ height: 10, minHeight: 60, maxHeight: 90 })
+    ).toBe(60)
+    expect(
+      getConstrainedHeight({ height: 200, minHeight: 60, maxHeight: 90 })
+    ).toBe(90)
   })
 })
 
 describe('getResizeWidth', () => {
-  const node = { x: 100, y: 50, width: 200, height: 150, minWidth: undefined, minHeight: undefined, maxHeight: undefined }
+  const node = {
+    x: 100,
+    y: 50,
+    width: 200,
+    height: 150,
+    minWidth: undefined,
+    minHeight: undefined,
+    maxHeight: undefined,
+  }
 
   describe('right edge', () => {
     it('returns pointer distance from node origin', () => {
@@ -91,7 +129,15 @@ describe('getResizeWidth', () => {
 })
 
 describe('getResizeHeight', () => {
-  const node = { x: 0, y: 100, width: 200, height: 200, minHeight: undefined, maxHeight: undefined, minWidth: undefined }
+  const node = {
+    x: 0,
+    y: 100,
+    width: 200,
+    height: 200,
+    minHeight: undefined,
+    maxHeight: undefined,
+    minWidth: undefined,
+  }
 
   describe('bottom edge', () => {
     it('returns pointer distance from node top', () => {
@@ -121,7 +167,15 @@ describe('getResizeHeight', () => {
 })
 
 describe('calculateResizeResult', () => {
-  const node = { x: 100, y: 100, width: 200, height: 200, minWidth: undefined, minHeight: undefined, maxHeight: undefined }
+  const node = {
+    x: 100,
+    y: 100,
+    width: 200,
+    height: 200,
+    minWidth: undefined,
+    minHeight: undefined,
+    maxHeight: undefined,
+  }
 
   it('left edge returns updated x and width', () => {
     // pointerX=50: newWidth=200+100-50=250, newX=100+200-250=-50

@@ -1,7 +1,12 @@
 import { describe, it, expect } from 'vitest'
 import { getAnchorScale, getScaledAnchorMetrics } from './helpers'
 import { findHitAnchor } from '../events/mouseEvents'
-import { CORNER_ANCHOR_SIZE, ANCHOR_WIDTH, ANCHOR_HEIGHT, EL_MIN_SIZE } from '../constants'
+import {
+  CORNER_ANCHOR_SIZE,
+  ANCHOR_WIDTH,
+  ANCHOR_HEIGHT,
+  EL_MIN_SIZE,
+} from '../constants'
 import type { CanvasNode } from '../types'
 
 function node(x: number, y: number, w: number, h: number): CanvasNode {

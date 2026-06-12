@@ -35,7 +35,9 @@ function makeCanvas(width = 400, height = 400) {
   canvas.width = width
   canvas.height = height
   const ctx = makeMockCtx()
-  vi.spyOn(canvas, 'getContext').mockReturnValue(ctx as unknown as CanvasRenderingContext2D)
+  vi.spyOn(canvas, 'getContext').mockReturnValue(
+    ctx as unknown as CanvasRenderingContext2D
+  )
   return { canvas, ctx }
 }
 
@@ -43,7 +45,7 @@ function fireMouseEvent(
   target: EventTarget,
   type: string,
   offsetX = 0,
-  offsetY = 0,
+  offsetY = 0
 ) {
   const event = new MouseEvent(type, { bubbles: true, cancelable: true })
   Object.defineProperty(event, 'offsetX', { value: offsetX })
@@ -77,8 +79,8 @@ const NODE_CENTER_X = 140
 const NODE_CENTER_Y = 140
 
 // Delete button center in canvas space: x=80+120-DEL_BTN_OFFSET=170, y=80+DEL_BTN_OFFSET=110
-const DEL_X = 80 + 120 - DEL_BTN_OFFSET   // 170
-const DEL_Y = 80 + DEL_BTN_OFFSET           // 110
+const DEL_X = 80 + 120 - DEL_BTN_OFFSET // 170
+const DEL_Y = 80 + DEL_BTN_OFFSET // 110
 
 // Bottom-right anchor hit point (safe interior): ~(185,185)
 const BR_ANCHOR_X = 185
@@ -151,7 +153,12 @@ describe('CanvasEditor', () => {
       // hover → select → drag
       fireMouseEvent(canvas, 'mousemove', NODE_CENTER_X, NODE_CENTER_Y)
       fireMouseEvent(canvas, 'mousedown', NODE_CENTER_X, NODE_CENTER_Y)
-      fireMouseEvent(canvas, 'mousemove', NODE_CENTER_X + 20, NODE_CENTER_Y + 20)
+      fireMouseEvent(
+        canvas,
+        'mousemove',
+        NODE_CENTER_X + 20,
+        NODE_CENTER_Y + 20
+      )
 
       expect(onUpdate).toHaveBeenCalled()
     })
@@ -160,7 +167,12 @@ describe('CanvasEditor', () => {
       editor.loadItems([makeSourceNode()])
       onUpdate.mockClear()
 
-      fireMouseEvent(canvas, 'mousemove', NODE_CENTER_X + 10, NODE_CENTER_Y + 10)
+      fireMouseEvent(
+        canvas,
+        'mousemove',
+        NODE_CENTER_X + 10,
+        NODE_CENTER_Y + 10
+      )
 
       expect(onUpdate).not.toHaveBeenCalled()
     })
@@ -218,7 +230,8 @@ describe('CanvasEditor', () => {
       fireMouseEvent(canvas, 'mousedown', DEL_X, DEL_Y)
 
       expect(onLayersChange).toHaveBeenCalled()
-      const lastLayers = onLayersChange.mock.calls[onLayersChange.mock.calls.length - 1]
+      const lastLayers =
+        onLayersChange.mock.calls[onLayersChange.mock.calls.length - 1]
       expect(lastLayers[0]).toHaveLength(0)
     })
   })
@@ -329,7 +342,12 @@ describe('CanvasEditor', () => {
 
       fireMouseEvent(canvas, 'mousemove', NODE_CENTER_X, NODE_CENTER_Y)
       fireMouseEvent(canvas, 'mousedown', NODE_CENTER_X, NODE_CENTER_Y)
-      fireMouseEvent(canvas, 'mousemove', NODE_CENTER_X + 20, NODE_CENTER_Y + 20)
+      fireMouseEvent(
+        canvas,
+        'mousemove',
+        NODE_CENTER_X + 20,
+        NODE_CENTER_Y + 20
+      )
 
       expect(onUpdate).not.toHaveBeenCalled()
     })
